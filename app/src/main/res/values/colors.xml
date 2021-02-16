@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#075e54</color>
+    <color name="colorPrimaryDark">#054d54</color>
+    <color name="colorAccent">#25d366</color>
+    <color name="light_grey">#EEEEEE</color>
+    <color name="balaoRemetente">#dbf9c4</color>
+</resources>

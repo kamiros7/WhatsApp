@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "438786251232",
+    "project_id": "whatsapp-7865b",
+    "storage_bucket": "whatsapp-7865b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438786251232:android:b6ef044e49ab508fa17385",
+        "android_client_info": {
+          "package_name": "com.camilo.teste.whatsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438786251232-gnq4u7v9i4dlg2gi8embsa69oi5i3n4e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.camilo.teste.whatsapp",
+            "certificate_hash": "6212f35ae28e21fde2f8205000a7fe13424a08d4"
+          }
+        },
+        {
+          "client_id": "438786251232-9cmlidhs11beliihkgbuqm789hut3h4o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL65fbqqjsxo2e_X1w2pWBKDovYgLsIWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438786251232-9cmlidhs11beliihkgbuqm789hut3h4o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

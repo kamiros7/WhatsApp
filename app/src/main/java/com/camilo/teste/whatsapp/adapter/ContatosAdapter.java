@@ -44,15 +44,22 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Usuario usuario = contatos.get(position);
+        boolean itemGrupo = usuario.getEmail().isEmpty();
 
         holder.nome.setText(usuario.getNome());
         holder.email.setText(usuario.getEmail());
 
-        if(usuario.getFoto() != null || usuario.getFoto() == "" ){
+        if(usuario.getFoto() != null ){
             Uri url = Uri.parse(usuario.getFoto());
             Glide.with(context).load(url).into(holder.foto);
         }else{
-            holder.foto.setImageResource(R.drawable.padrao);
+            if(itemGrupo){
+                holder.foto.setImageResource(R.drawable.icone_grupo);
+                holder.email.setVisibility(View.GONE); //para não ficar visivel
+            }else{
+                holder.foto.setImageResource(R.drawable.padrao);
+            }
+
         }
     }
 

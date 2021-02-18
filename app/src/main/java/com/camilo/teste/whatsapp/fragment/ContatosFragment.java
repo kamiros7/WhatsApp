@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 
 import com.camilo.teste.whatsapp.R;
 import com.camilo.teste.whatsapp.activity.ChatActivity;
+import com.camilo.teste.whatsapp.activity.GrupoActivity;
 import com.camilo.teste.whatsapp.adapter.ContatosAdapter;
 import com.camilo.teste.whatsapp.config.ConfiguracaoFirebase;
 import com.camilo.teste.whatsapp.helper.RecyclerItemClickListener;
@@ -79,9 +80,16 @@ public class ContatosFragment extends Fragment {
                                 //para passar objetos para outra activity, use o put extra
                                 //Contudo, na classe usuario, é preciso usar o implements serializable, para que seja permitido a passagem de dados pela intent
                                 Usuario usuarioSelecionado = listaContatos.get(position);
-                                Intent i = new Intent(getActivity(), ChatActivity.class);
-                                i.putExtra("chatContato", usuarioSelecionado);
-                                startActivity(i);
+                                boolean itemGrupo = usuarioSelecionado.getEmail().isEmpty(); //itemGrupo se refere ao item para criar o novo grupo na lista de contatos
+                                if(itemGrupo){
+                                    Intent i = new Intent(getActivity(), GrupoActivity.class);
+                                    startActivity(i);
+                                }else{
+                                    Intent i = new Intent(getActivity(), ChatActivity.class);
+                                    i.putExtra("chatContato", usuarioSelecionado);
+                                    startActivity(i);
+                                }
+
                             }
 
                             @Override
@@ -97,6 +105,9 @@ public class ContatosFragment extends Fragment {
                 )
         );
 
+        adicionaItemGrupo();
+
+
         return view;
     }
 
@@ -107,6 +118,10 @@ public class ContatosFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listaContatos.clear();
+
+                adicionaItemGrupo();
+                contatosAdapter.notifyDataSetChanged();
+
                 for(DataSnapshot dados : snapshot.getChildren()){
                     Usuario usuario = dados.getValue(Usuario.class);
 
@@ -123,6 +138,13 @@ public class ContatosFragment extends Fragment {
 
             }
         });
+    }
+
+    public void adicionaItemGrupo(){
+        Usuario itemGrupo = new Usuario();
+        itemGrupo.setNome("Novo Grupo");
+        itemGrupo.setEmail(""); //email vazio, pois como qualquer usuario tem email, o usuario com email vazio será o item para grupos
+        listaContatos.add(itemGrupo);
     }
 
     @Override

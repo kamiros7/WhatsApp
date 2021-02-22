@@ -1,4 +1,4 @@
-<p>Clone do app WhatsApp, perfomando as funções básicas do aplicativo, no qual foi implmentado em linguagem Java, utilizando Firebase como banco de dados </p>
+<p>Clone do app WhatsApp, perfomando as funções básicas do aplicativo, no qual foi implementado em linguagem Java, utilizando Firebase como banco de dados </p>
 
 <p align="center">
   <a href="#-o-projeto">📓 O Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -15,7 +15,7 @@
   <div>
     <ul>
       <li>Java com Android Studio</li>
-      <li>Firebase authentication</li>
+      <li>Firebase Authentication</li>
       <li>Firebase RealtimeDatabase</li>
       <li>Firebase Storage</li>        
      </ul>   
@@ -49,3 +49,4 @@
       <li>Obs: Testatado com MIUI Global 12.0.3</li>
      </ul>   
  </div>
+ 

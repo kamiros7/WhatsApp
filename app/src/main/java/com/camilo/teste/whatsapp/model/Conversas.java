@@ -10,7 +10,11 @@ public class Conversas {
     private String ultimaMensagem;
     private Usuario usuarioExibicao; //usuário que será exibido
 
+    private Grupo grupo;
+    private String isGroup;
+
     public Conversas() {
+        this.setIsGroup("false");
     }
 
     public void salvar(){
@@ -52,5 +56,21 @@ public class Conversas {
 
     public void setUsuario(Usuario usuario) {
         this.usuarioExibicao = usuario;
+    }
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+
+    public String getIsGroup() {
+        return isGroup;
+    }
+
+    public void setIsGroup(String isGroup) {
+        this.isGroup = isGroup;
     }
 }

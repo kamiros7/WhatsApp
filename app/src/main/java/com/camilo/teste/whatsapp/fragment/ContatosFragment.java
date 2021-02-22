@@ -18,9 +18,11 @@ import com.camilo.teste.whatsapp.R;
 import com.camilo.teste.whatsapp.activity.ChatActivity;
 import com.camilo.teste.whatsapp.activity.GrupoActivity;
 import com.camilo.teste.whatsapp.adapter.ContatosAdapter;
+import com.camilo.teste.whatsapp.adapter.ConversasAdapter;
 import com.camilo.teste.whatsapp.config.ConfiguracaoFirebase;
 import com.camilo.teste.whatsapp.helper.RecyclerItemClickListener;
 import com.camilo.teste.whatsapp.helper.UsuarioFirebase;
+import com.camilo.teste.whatsapp.model.Conversas;
 import com.camilo.teste.whatsapp.model.Usuario;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,7 +82,12 @@ public class ContatosFragment extends Fragment {
                             public void onItemClick(View view, int position) {
                                 //para passar objetos para outra activity, use o put extra
                                 //Contudo, na classe usuario, é preciso usar o implements serializable, para que seja permitido a passagem de dados pela intent
-                                Usuario usuarioSelecionado = listaContatos.get(position);
+
+                                //Como o adapter sempre sabe qual é a lista atual utilziada ( a de todas os contatos, ou de contatos selecionados )
+                                //Logo não terá erro ao selecionar um contato(pesquisado pelo nome de uma pessoa) e redirecionar para outro contato
+                                List<Usuario> listaContatosAtualizada = contatosAdapter.getContatos();
+
+                                Usuario usuarioSelecionado = listaContatosAtualizada.get(position);
                                 boolean itemGrupo = usuarioSelecionado.getEmail().isEmpty(); //itemGrupo se refere ao item para criar o novo grupo na lista de contatos
                                 if(itemGrupo){
                                     Intent i = new Intent(getActivity(), GrupoActivity.class);
@@ -157,5 +165,28 @@ public class ContatosFragment extends Fragment {
     public void onStop() {
         super.onStop();
         usuariosRef.removeEventListener(valueEventListenerContatos);
+    }
+
+    public void pesquisarContatos(String texto){
+        List<Usuario> listaContatosBusca = new ArrayList<>();
+        for(Usuario usuario : listaContatos){
+            String nome = usuario.getNome().toLowerCase();
+                if(nome.contains(texto)) {
+                    listaContatosBusca.add(usuario);
+                }
+        }
+
+        contatosAdapter = new ContatosAdapter(listaContatosBusca, getActivity());
+        recyclerViewContatos.setAdapter(contatosAdapter);
+        contatosAdapter.notifyDataSetChanged();
+    }
+
+    public void recarregarContatos(){
+
+        //Essa função tem o intuito de apenas atualizar o adapter com a lista de conversas (geral)
+        //como a lista já está criada, e o child event listner também, só é preciso trocar a lista para o adapter
+        contatosAdapter = new ContatosAdapter(listaContatos, getActivity());
+        recyclerViewContatos.setAdapter(contatosAdapter);
+        contatosAdapter.notifyDataSetChanged();
     }
 }

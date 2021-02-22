@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.camilo.teste.whatsapp.R;
 import com.camilo.teste.whatsapp.model.Conversas;
+import com.camilo.teste.whatsapp.model.Grupo;
 import com.camilo.teste.whatsapp.model.Usuario;
 
 import java.util.List;
@@ -45,15 +46,33 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
         Conversas conversa = conversas.get(position);
         holder.ultimaMensagem.setText(conversa.getUltimaMensagem());
 
-        Usuario usuario = conversa.getUsuario();
-        holder.nome.setText(usuario.getNome());
+        if(conversa.getIsGroup().equals("true")){
+            //tratamento de conversa para grupos
+            Grupo grupo = conversa.getGrupo();
+            holder.nome.setText(grupo.getNome());
 
-        if(usuario.getFoto() != null){
-            Uri url = Uri.parse(usuario.getFoto());
-            Glide.with(context).load(url).into(holder.foto);
+            if(grupo.getFoto() != null){
+                Uri url = Uri.parse(grupo.getFoto());
+                Glide.with(context).load(url).into(holder.foto);
+            }else{
+                holder.foto.setImageResource(R.drawable.padrao);
+            }
+
         }else{
-            holder.foto.setImageResource(R.drawable.padrao);
+            //tratamento de conversa com usuario
+            Usuario usuario = conversa.getUsuario();
+            if(usuario != null){
+                holder.nome.setText(usuario.getNome());
+
+                if(usuario.getFoto() != null){
+                    Uri url = Uri.parse(usuario.getFoto());
+                    Glide.with(context).load(url).into(holder.foto);
+                }else{
+                    holder.foto.setImageResource(R.drawable.padrao);
+                }
+            }
         }
+
     }
 
     @Override
@@ -72,5 +91,13 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
             nome = itemView.findViewById(R.id.textNomeContato);
             ultimaMensagem = itemView.findViewById(R.id.textEmailContato);
         }
+    }
+
+    public List<Conversas> getConversas() {
+        return conversas;
+    }
+
+    public void setConversas(List<Conversas> conversas) {
+        this.conversas = conversas;
     }
 }

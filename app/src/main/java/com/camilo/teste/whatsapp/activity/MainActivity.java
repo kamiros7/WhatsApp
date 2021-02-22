@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.camilo.teste.whatsapp.R;
 import com.camilo.teste.whatsapp.config.ConfiguracaoFirebase;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 .create()
         );
 
-        ViewPager viewPager = findViewById(R.id.viewpager);
+        final ViewPager viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
 
         SmartTabLayout smartTabLayout = findViewById(R.id.viewPagerTab);
@@ -79,10 +80,26 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                ConversasFragment fragment =  (ConversasFragment) adapter.getPage(0);
-                if(newText != null && !newText.isEmpty()){
-                    //passo para minusculo, para fim de facilitar a pesquisa
-                    fragment.pesquisarConversas(newText.toLowerCase());
+
+                switch (viewPager.getCurrentItem()){
+                    case 0:
+                        ConversasFragment conversasFragment =  (ConversasFragment) adapter.getPage(0);
+                        if(newText != null && !newText.isEmpty()){
+                            //passo para minusculo, para fim de facilitar a pesquisa
+                            conversasFragment.pesquisarConversas(newText.toLowerCase());
+                        }else{
+                            conversasFragment.recarregarConversas();
+                        }
+                        break;
+                    case 1:
+                        ContatosFragment contatosFragment =  (ContatosFragment) adapter.getPage(1);
+                        if(newText != null && !newText.isEmpty()){
+                            //passo para minusculo, para fim de facilitar a pesquisa
+                            contatosFragment.pesquisarContatos(newText.toLowerCase());
+                        }else{
+                            contatosFragment.recarregarContatos();
+                        }
+                        break;
                 }
 
                 return true;

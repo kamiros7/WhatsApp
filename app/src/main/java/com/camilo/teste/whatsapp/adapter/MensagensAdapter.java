@@ -55,10 +55,29 @@ public class MensagensAdapter extends RecyclerView.Adapter<MensagensAdapter.MyVi
             Uri url = Uri.parse(imagemMensagem);
             Glide.with(context).load(url).into(holder.foto);
 
+            String nome = mensagem.getNome();
+            //Nesse caso o nome é do usuario que manda a mensagem, porém só é setado o nome para grupo, conversa entre
+            //dois usuarios, o nome está vazio
+            if(! nome.isEmpty()){
+                holder.nome.setText(nome);
+            }else{
+                holder.nome.setVisibility(View.GONE);
+            }
+
             //Esconder o texto
             holder.textMensagem.setVisibility(View.GONE);
         }else{
             holder.textMensagem.setText(textoMensagem);
+
+            String nome = mensagem.getNome();
+            //Nesse caso o nome é do usuario que manda a mensagem, porém só é setado o nome para grupo, conversa entre
+            //dois usuarios, o nome está vazio
+            if(! nome.isEmpty()){
+                holder.nome.setText(nome);
+            }else{
+                holder.nome.setVisibility(View.GONE);
+            }
+
 
             //Esconder imagem
             holder.foto.setVisibility(View.GONE);
@@ -85,12 +104,15 @@ public class MensagensAdapter extends RecyclerView.Adapter<MensagensAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView textMensagem;
+        TextView nome;
         ImageView foto;
+
         public MyViewHolder(View itemView)
         {
             super (itemView);
             textMensagem = itemView.findViewById(R.id.textMensagemTexto);
             foto = itemView.findViewById(R.id.imageMensagemFoto);
+            nome = itemView.findViewById(R.id.textNomeExibicao);
         }
     }
 

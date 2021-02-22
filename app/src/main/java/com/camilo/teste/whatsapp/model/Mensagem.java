@@ -3,10 +3,12 @@ package com.camilo.teste.whatsapp.model;
 public class Mensagem {
 
     private String idUsuario;
+    private String nome;
     private String mensagem;
     private String imagem;
 
     public Mensagem() {
+        this.nome = "";
     }
 
     public String getIdUsuario() {
@@ -31,5 +33,13 @@ public class Mensagem {
 
     public void setImagem(String imagem) {
         this.imagem = imagem;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

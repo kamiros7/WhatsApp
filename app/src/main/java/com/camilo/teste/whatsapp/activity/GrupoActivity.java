@@ -1,5 +1,6 @@
 package com.camilo.teste.whatsapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.camilo.teste.whatsapp.adapter.ContatosAdapter;
@@ -9,7 +10,6 @@ import com.camilo.teste.whatsapp.helper.RecyclerItemClickListener;
 import com.camilo.teste.whatsapp.helper.UsuarioFirebase;
 import com.camilo.teste.whatsapp.model.Usuario;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,14 +51,8 @@ public class GrupoActivity extends AppCompatActivity {
         toolbar.setTitle("Novo Grupo");
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        FloatingActionButton fab = findViewById(R.id.fabAvancarCadastro);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         membrosRef = ConfiguracaoFirebase.getDatabase().child("usuarios");
@@ -148,6 +143,28 @@ public class GrupoActivity extends AppCompatActivity {
                 }
         ));
 
+        //configuração do fab
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(GrupoActivity.this, CadastroGrupoActivity.class);
+                i.putExtra("membros",(Serializable) listaMembrosSelecionados);
+                startActivity(i);
+            }
+        });
+
+    }
+
+    public boolean contemMembroSelecionado(Usuario usuario){
+
+        boolean ehSelecionado = false;
+
+        for( int i =0; i < listaMembrosSelecionados.size(); i++){
+           if(listaMembrosSelecionados.get(i).getEmail().equals(usuario.getEmail()))
+               ehSelecionado = true;
+        }
+
+        return ehSelecionado;
     }
 
     public void recuperarMembros(){
@@ -159,9 +176,16 @@ public class GrupoActivity extends AppCompatActivity {
                 for(DataSnapshot dados : snapshot.getChildren()){
                     Usuario usuario = dados.getValue(Usuario.class);
 
+                    boolean ehSelecionado = contemMembroSelecionado(usuario);
+
                     String emailUsuarioAtual = usuarioAtual.getEmail();
-                    if(!emailUsuarioAtual.equals(usuario.getEmail()))
-                        listaMembros.add(usuario);
+                    if(!emailUsuarioAtual.equals(usuario.getEmail())){
+                        if(!ehSelecionado){
+                            listaMembros.add(usuario);
+                        }
+                    }
+
+
                 }
 
                 contatosAdapter.notifyDataSetChanged();

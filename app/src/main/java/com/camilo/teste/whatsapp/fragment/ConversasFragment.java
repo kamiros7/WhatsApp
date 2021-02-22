@@ -76,11 +76,22 @@ public class ConversasFragment extends Fragment {
                         //para passar objetos para outra activity, use o put extra
                         //Contudo, na classe usuario, é preciso usar o implements serializable, para que seja permitido a passagem de dados pela intent
 
-                        Conversas conversaSelecionada = listaConversas.get(position);
+                        //Como o adapter sempre sabe qual é a lista atual utilziada ( a de todas as conversar, ou de conversas selecionadas )
+                        //Logo não terá erro ao selecionar uma conversa (pesquisada pelo nome de uma pessoa) e redirecionar para outro contato
+                        List<Conversas> listConversaAtualizada = adapter.getConversas();
+                        Conversas conversaSelecionada = listConversaAtualizada.get(position);
 
-                        Intent i = new Intent(getActivity(), ChatActivity.class);
-                        i.putExtra("chatContato", conversaSelecionada.getUsuario());
-                        startActivity(i);
+                        if(conversaSelecionada.getIsGroup().equals("true")){
+                            Intent i = new Intent(getActivity(), ChatActivity.class);
+                            i.putExtra("chatGrupo", conversaSelecionada.getGrupo());
+                            startActivity(i);
+                        }else{
+                            Intent i = new Intent(getActivity(), ChatActivity.class);
+                            i.putExtra("chatContato", conversaSelecionada.getUsuario());
+                            startActivity(i);
+                        }
+
+
                     }
 
                     @Override
@@ -107,14 +118,23 @@ public class ConversasFragment extends Fragment {
     public void pesquisarConversas(String texto){
         List<Conversas> listaConversasBusca = new ArrayList<>();
         for(Conversas conversa : listaConversas){
-            String nome = conversa.getUsuario().getNome().toLowerCase();
 
-            if(nome.contains(texto)){
-                listaConversasBusca.add(conversa);
+            if(conversa.getUsuario() != null){
+                String nome = conversa.getUsuario().getNome().toLowerCase();
+                if(nome.contains(texto)){
+                    listaConversasBusca.add(conversa);
+                }
+            }else{
+                String nome = conversa.getGrupo().getNome().toLowerCase();
+                if(nome.contains(texto)){
+                    listaConversasBusca.add(conversa);
+                }
             }
+
+
         }
 
-        ConversasAdapter adapter = new ConversasAdapter(listaConversasBusca, getActivity());
+        adapter = new ConversasAdapter(listaConversasBusca, getActivity());
         recyclerViewListaConversas.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -156,7 +176,7 @@ public class ConversasFragment extends Fragment {
 
         //Essa função tem o intuito de apenas atualizar o adapter com a lista de conversas (geral)
         //como a lista já está criada, e o child event listner também, só é preciso trocar a lista para o adapter
-        ConversasAdapter adapter = new ConversasAdapter(listaConversas, getActivity());
+        adapter = new ConversasAdapter(listaConversas, getActivity());
         recyclerViewListaConversas.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }

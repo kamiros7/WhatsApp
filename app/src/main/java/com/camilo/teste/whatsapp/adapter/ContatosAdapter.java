@@ -83,4 +83,11 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.MyView
         }
     }
 
+    public List<Usuario> getContatos() {
+        return contatos;
+    }
+
+    public void setContatos(List<Usuario> contatos) {
+        this.contatos = contatos;
+    }
 }
